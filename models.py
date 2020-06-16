@@ -51,7 +51,7 @@ class Movie(db.Model):
     id = Column(Integer, primary_key=True)
     title = Column(String(120), nullable=False)
     release_date = Column(DateTime, nullable=False)
-    actor_id = Column(Integer, ForeignKey('actors.id'))
+    actor_id = Column(Integer, ForeignKey('actors.id', ondelete="CASCADE"))
     # fee = Column(Integer)
 
     def insert(self):
@@ -97,8 +97,8 @@ class Actor(db.Model):
     movies = db.relationship(
         'Movie',
         backref='Actor',
-        lazy='dynamic', 
-        cascade="save-update, delete,delete-orphan",
+        lazy=True, 
+        cascade="save-update,delete, delete-orphan",
         passive_deletes=True
     )
 
