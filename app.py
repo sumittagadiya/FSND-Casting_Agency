@@ -17,7 +17,7 @@ def create_app(test_config=None):
 
 
 app = create_app()
-#db_drop_and_create_all() # uncomment this if you want to start a new database on app refresh
+db_drop_and_create_all() # uncomment this if you want to start a new database on app refresh
 RECORD_PER_PAGE = 10
 
 #----------------------------------------------------------------------------#
@@ -284,11 +284,12 @@ delete Movie record
 @app.route("/movies/<int:id>",methods=["DELETE"])
 @requires_auth("delete:movies")
 def remove_movie(payload,id):
-  movie = Movie.query.filter_by(id=id).one_or_none
+  movie = Movie.query.filter_by(id=id).one_or_none()
   if movie is None:
     abort(404)
   else:
     try:
+      #print("===============>",movie.title)
       movie.delete()
       return jsonify({
         "success": True,
@@ -330,6 +331,13 @@ def ressource_not_found(error):
     "error": "Resources_not_found"
   }), 404
 
+@app.errorhandler(401)
+def unauthorized(error):
+  return jsonify({
+    "success": False,
+    "status_code": 401,
+    "message": 'Unathorized'
+    }), 401
 
 @app.errorhandler(AuthError)
 def auth_error(error):
