@@ -42,7 +42,7 @@ def get_token_auth_header():
         }, 401)
 
     parts = auth.split(' ')
-    print('Authorization Header ========>',parts)
+    #print('Authorization Header ========>',parts)
     if parts[0].lower() != 'bearer':
         raise AuthError({
             'code': 'invalid_header',
@@ -120,7 +120,7 @@ def verify_decode_jwt(token):
                 'n': key['n'],
                 'e': key['e']
             }
-    print('rsa key =========>',rsa_key)
+    #print('rsa key =========>',rsa_key)
     if rsa_key:
         try:
             payload = jwt.decode(
@@ -168,7 +168,7 @@ def requires_auth(permission=''):
         @wraps(f)
         def wrapper(*args, **kwargs):
             token = get_token_auth_header()
-            print("Token ==========>", token)
+            #print("Token ==========>", token)
             try:
                 payload = verify_decode_jwt(token)
             except:
