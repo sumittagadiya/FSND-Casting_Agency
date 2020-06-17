@@ -17,7 +17,7 @@ def create_app(test_config=None):
 
 
 app = create_app()
-db_drop_and_create_all() # uncomment this if you want to start a new database on app refresh
+#db_drop_and_create_all() # uncomment this if you want to start a new database on app refresh
 RECORD_PER_PAGE = 10
 
 #----------------------------------------------------------------------------#
@@ -30,6 +30,14 @@ RECORD_PER_PAGE = 10
   #----------------------------------------------------------------------------#
   # Endpoint /actors GET/POST/DELETE/PATCH
   #----------------------------------------------------------------------------#
+
+
+'''default endpoint'''
+@app.route('/', methods=['POST', 'GET'])
+def health():
+    return jsonify("Healthy")
+
+
 
 ''' 
 GET : get all movies 
