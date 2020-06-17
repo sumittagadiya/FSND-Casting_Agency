@@ -1,50 +1,47 @@
-from sqlalchemy import String, Integer, Column, create_engine, DateTime, ForeignKey
-from flask_sqlalchemy import SQLAlchemy
+#----------------
+# Imports
+#----------------
+
 import os
+from flask_sqlalchemy import SQLAlchemy
+from datetime import date
+from sqlalchemy import Column, String, Integer, Boolean, DateTime, ForeignKey
 import json
 from datetime import date
 
-#----------------------------------------------------------------------------#
-# Database Setup 
-#----------------------------------------------------------------------------#
 
-# Use Production Database.
+# Database Setup 
+
+# Use production database.
 
 database_path = os.environ['DATABASE_URL']
 
-# If run locally, key does not exist, so use locally set database instead.
+# If you want run locally you can give path as follow.
 #database_path = "postgres://{}:{}@{}/{}".format('postgres','1234','localhost:5432', 'casting')
 db = SQLAlchemy()
 
 def setup_db(app, database_path=database_path):
-    '''binds a flask application and a SQLAlchemy service'''
+    '''Binds a Flask Application and a SQLAlchemy '''
     app.config["SQLALCHEMY_DATABASE_URI"] = database_path
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
     db.init_app(app)
     db.create_all()
 
-def db_drop_and_create_all():
-    '''drops the database tables and starts fresh
-    can be used to initialize a clean database
-    '''   
+def db_drop_create_all():
+    '''drop existing database and create new fresh database'''   
     db.drop_all()
     db.create_all()
-    db_init_records()
+    db_initialize_records()
 
-def test_db_drop_and_create_all():
-    '''drops the database tables and starts fresh
-    can be used to initialize a clean database
-    '''   
+def test_db_drop_create_all():
+    '''drop existing database and create new fresh database'''  
     db.drop_all()
     db.create_all()
-    db_init_records()
+    db_initialize_records()
 
 
-#----------------------------------------------------------------------------#
 # Movies Model 
-# Attribute : title, release_date
-#----------------------------------------------------------------------------#
 
 class Movie(db.Model):
     __tablename__ = 'movies'
@@ -52,7 +49,6 @@ class Movie(db.Model):
     title = Column(String(120), nullable=False)
     release_date = Column(DateTime, nullable=False)
     actor_id = Column(Integer, ForeignKey('actors.id', ondelete="CASCADE"))
-    # fee = Column(Integer)
 
     def insert(self):
         db.session.add(self)
@@ -81,10 +77,7 @@ class Movie(db.Model):
         }
 
 
-#----------------------------------------------------------------------------#
 # Actors Model 
-# Attribute : name, age, gender
-#----------------------------------------------------------------------------#
 
 class Actor(db.Model):
     __tablename__ = 'actors'
@@ -136,66 +129,66 @@ class Actor(db.Model):
         }
 
 
-def db_init_records():
-    '''this will initialize the database with some test records.'''
+def db_initialize_records():
+    '''initialize own records'''
 
-    new_actor = (Actor(
+    new_actor_1 = (Actor(
         name='Emraan Hashmi',
         gender='Male',
         age=39
         ))
 
-    new_actor1 = (Actor(
+    new_actor_2 = (Actor(
         name='salman khan',
         gender='Male',
         age=50
         ))
 
-    new_actor2 = (Actor(
+    new_actor_3 = (Actor(
         name='Hrithik Roshan',
         gender='Male',
         age=40
         ))
 
-    new_actor3 = (Actor(
+    new_actor_4 = (Actor(
         name='Tony Starc',
         gender='Male',
         age=45
         ))
 
-    new_actor.insert()
-    new_actor1.insert()
-    new_actor2.insert()
-    new_actor3.insert()
+    new_actor_1.insert()
+    new_actor_2.insert()
+    new_actor_3.insert()
+    new_actor_4.insert()
 
     # Create record for new movie
-    new_movie = (Movie(
+    new_movie_1 = (Movie(
         title='Jannat',
         release_date=date.today(),
-        actor_id=new_actor.id
+        actor_id=new_actor_1.id
         ))
 
-    new_movie1 = (Movie(
+    new_movie_2 = (Movie(
         title='Partner',
         release_date=date.today(),
-        actor_id=new_actor1.id
+        actor_id=new_actor_2.id
         ))
 
-    new_movie2 = (Movie(
+    new_movie_3 = (Movie(
         title='Super 30',
         release_date=date.today(),
-        actor_id=new_actor2.id
+        actor_id=new_actor_3.id
         ))
-    new_movie3 = (Movie(
+    new_movie_4 = (Movie(
         title='Avengers-End game',
         release_date=date.today(),
-        actor_id=new_actor3.id
+        actor_id=new_actor_4.id
         ))
     
-    new_movie.insert()
-    new_movie1.insert()
-    new_movie2.insert()
-    new_movie3.insert()
+    new_movie_1.insert()
+    new_movie_2.insert()
+    new_movie_3.insert()
+    new_movie_4.insert()
 
     db.session.commit()
 

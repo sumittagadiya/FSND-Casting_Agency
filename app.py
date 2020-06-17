@@ -1,75 +1,69 @@
 import os
-from flask import Flask, request, abort, jsonify
-from flask_sqlalchemy import SQLAlchemy
-from flask_cors import CORS
-from models import Movie, Actor, setup_db, db_drop_and_create_all
-from auth.auth import AuthError, requires_auth
 import sys
+from flask import Flask, jsonify, request, abort
+from flask_cors import CORS
+from auth.auth import AuthError, requires_auth
+from models import setup_db,Movie, Actor, db_drop_create_all
 
 
 def create_app(test_config=None):
-  # create and configure the app
   app = Flask(__name__)
   setup_db(app)
-  CORS(app)
-
+  CORS(app, resources={'/': {"origins": "*"}}) #Set up CORS. Allow '*' for origins.
   return app
 
-
 app = create_app()
-#db_drop_and_create_all() # uncomment this if you want to start a new database on app refresh
+#db_drop_create_all() # uncomment this if you want to start a new database on app refresh
+
 RECORD_PER_PAGE = 10
+def paginated_records(request,records,RECORD_PER_PAGE):
+  page=request.args.get('page',1,type=int)
+  start=(page - 1)*RECORD_PER_PAGE
+  end=start+RECORD_PER_PAGE
+  records = [record.short() for record in records]
+  current_records = records[start:end]
+  return current_records
 
-#----------------------------------------------------------------------------#
-  #  API Endpoints
-  #  ----------------------------------------------------------------
-  #  NOTE:  For explanation of each endpoint, please have look at the README.md file. 
-  #         DOC Strings only contain short description and list of test classes 
-  #----------------------------------------------------------------------------#
-
-  #----------------------------------------------------------------------------#
-  # Endpoint /actors GET/POST/DELETE/PATCH
-  #----------------------------------------------------------------------------#
-
+#  API Endpoints
+# Endpoint  GET/POST/DELETE/PATCH
 
 '''default endpoint'''
 @app.route('/', methods=['POST', 'GET'])
 def health():
-    return jsonify("Healthy")
+  return jsonify("Healthy")
 
 
 
 ''' 
-GET : get all movies 
+get all movies with Authorization header
 '''
 
 
 @app.route("/movies", methods=["GET"])
 @requires_auth("get:movies")
-def get_movies(payload):
-  #page_num = request.args.get('page',1,type=int)
-  #print(page_num)
-  movies = Movie.query.paginate(per_page=RECORD_PER_PAGE, error_out=True)
+def get_movies_list(payload):
+  movies = Movie.query.all()
+  total_movies = len(movies)
   print("movies ====> ", movies)
-  if len(movies.items) == 0:
+  # Get paginated movies
+  current_movies =  paginated_records(request, movies, RECORD_PER_PAGE)
+  if (len(current_movies) == 0):
     abort(404)
   else:
     return jsonify({
       "success" : True,
       "status_code": 200,
-      "movies": [movie.short() for movie in movies.items],
-      "total_record": movies.total
+      "movies": [current_movies],
+      "total_record": total_movies
       }), 200
 
-"""
-GET : get movie details 
-"""
+# get movie details for perticular movie id
 
-@app.route("/movies/<int:id>/details", methods=["GET"])
+@app.route("/movies/<int:movie_id>/details", methods=["GET"])
 @requires_auth("get:movies")
-def get_movie_details(payload,id):
-  movie = Movie.query.filter_by(id=id).one_or_none()
-  if movie is None:
+def get_movie_details_given_id(payload,movie_id):
+  movie = Movie.query.get(movie_id)
+  if not movie:
     abort(404)
   else:
     try:
@@ -78,20 +72,19 @@ def get_movie_details(payload,id):
         "success": True,
         "movie": movie.format()
       }), 200
-    except BaseException:
-      print(sys.exc_info())
+    except Exception:
       abort(500)
 
 '''
-GET : get all actors (/actors/actor_id/details)
+get particular actor details
 '''
 
-@app.route("/actors/<int:id>/details",methods=["GET"])
+@app.route("/actors/<int:actor_id>/details",methods=["GET"])
 @requires_auth("get:actors")
-def get_actor_details(payload,id):
+def get_particular_actor(payload,actor_id):
  # print("Actor id ===>", id)
-  actor = Actor.query.get(id)
-  if actor is None:
+  actor = Actor.query.get(actor_id)
+  if not actor:
     abort(404)
   else:
     try:
@@ -101,43 +94,38 @@ def get_actor_details(payload,id):
         'actor': actor.format()
       }), 200
 
-    except BaseException:
-      print(sys.exc_info())
+    except Exception:
       abort(500)
 
 '''
-GET/actors: get all actors
+get list of all actors
 '''
 
 @app.route("/actors",methods=["GET"])
 @requires_auth("get:actors")
-def get_actors(payload):
-  page_num = request.args.get('page',1,type=int)
-  print(page_num)
-  actors = Actor.query.paginate(per_page=RECORD_PER_PAGE,error_out=True)
-  if len(actors.items) == 0:
-        abort(404)
+def get_actors_list(payload):
+  actors = Actor.query.all()
+  total_actors = len(actors)
+  print("Actors =========>",actors)
+  # get paginated actors
+  current_actors =  paginated_records(request, actors, RECORD_PER_PAGE)
+  if (len(current_actors) == 0):
+    abort(404)
   else:
     return jsonify({
       "success": True,
       "status_code": 200,
-      "actors": [actor.short() for actor in actors.items],
-      "total_record": actors.total
+      "actors": [current_actors],
+      "total_record": total_actors
       }), 200
 
 '''
-  POST : /actors
-  create a new Actor Record
-  {
-    "name":name of actor,
-    "age": age of actor,
-    "gender": gender
-  }
+ POST: Create new actor with given details
 '''
 
 @app.route("/actors",methods=["POST"])
 @requires_auth("post:actors")
-def create_new_actor(payload):
+def add_new_actor(payload):
   body = request.get_json()
   name = body.get("name")
   age = body.get("age")
@@ -149,26 +137,19 @@ def create_new_actor(payload):
     return jsonify({
       "success": True,
       "status_code": 200,
-      "message": "{} created".format(actor.name),
-      "actor":actor.short()
+      "message": "{} added".format(actor.name),
+      "Added actor":actor.short()
     }), 200
-  except BaseException:
-    print(sys.exc_info())
+  except Exception:
     abort(400)
 
 '''
-  POST : /movies
-  create a new Movie Record
-  {
-    "title":"name of movie",
-    "release_date": "release date",
-    "actor_id": "Actor Id"
-  }
+POST : Add new movie with required details
 '''
 
 @app.route("/movies",methods=["POST"])
 @requires_auth("post:movies")
-def create_new_movie(payload):
+def add_new_movie(payload):
   body = request.get_json()
   new_title = body.get("title")
   new_release_date = body.get("release_date")
@@ -180,24 +161,22 @@ def create_new_movie(payload):
     return jsonify({
       "success": True,
       "status_code": 200,
-      "message": "{} created".format(movie.title),
-      "Movie": movie.short()
+      "message": "{} added".format(movie.title),
+      "Added Movie": movie.short()
     }), 200
-  except BaseException:
-    print(sys.exc_info())
+  except Exception:
     abort(400)
 
 '''
-PATCH /movies/id
-update perticular movie record
+PATCH : Update perticular movie details
 '''
 
-@app.route("/movies/<int:id>",methods=["PATCH"])
+@app.route("/movies/<int:movie_id>",methods=["PATCH"])
 @requires_auth("patch:movies")
-def edit_movie(payload,id):
-  movie = Movie.query.filter_by(id=id).one_or_none()
+def update_movie(payload,movie_id):
+  movie = Movie.query.get(movie_id)
   print("Movie to be patched",movie)
-  if movie is None:
+  if not movie :
     abort(404)
   else:
     try:
@@ -219,23 +198,21 @@ def edit_movie(payload,id):
         'movie':movie.short()
       }), 200
 
-    except BaseException:
-      print(sys.exc_info())
+    except Exception:
       abort(500)
 
 
 """
-PATCH /actors/id
-update actor record
+PATCH : update particular actor details
 """
 
 
-@app.route("/actors/<int:id>", methods=["PATCH"])
+@app.route("/actors/<int:actor_id>", methods=["PATCH"])
 @requires_auth("patch:actors")
-def edit_actor(payload, id):
+def edit_actor(payload, actor_id):
   print("patch actor id",id)
-  actor = Actor.query.filter_by(id=id).one_or_none()
-  if actor is None:
+  actor = Actor.query.get(actor_id)
+  if not actor :
     abort(404)
   else:
     try:
@@ -255,22 +232,20 @@ def edit_actor(payload, id):
         'success':  True,
         'actor': actor.short()
       }), 200
-    except BaseException:
-      print(sys.exc_info())
+    except Exception:
       abort(500)
 
 
 
 '''
-DELETE /actors/id
-delete actor record
+DELETE : delete particular actor
 '''
 
-@app.route("/actors/<int:id>",methods=["DELETE"])
+@app.route("/actors/<int:actor_id>",methods=["DELETE"])
 @requires_auth("delete:actors")
-def remove_actor(payload,id):
-  actor = Actor.query.filter_by(id=id).one_or_none()
-  if actor is None:
+def delete_actor(payload,actor_id):
+  actor = Actor.query.get(actor_id)
+  if not actor :
     abort(404)
   else:
     try:
@@ -278,22 +253,20 @@ def remove_actor(payload,id):
       return jsonify({
         "success": True,
         "status_code": 200,
-        "actor_id": id
+        "actor_id": "{} deleted".format(actor_id)
       }), 200
-    except BaseException:
-      print(sys.exc_info())
+    except Exception:
       abort(500)
 
 '''
-DELETE /movies/id
-delete Movie record
+DELETE : delete perticular movie record
 '''
 
-@app.route("/movies/<int:id>",methods=["DELETE"])
+@app.route("/movies/<int:movie_id>",methods=["DELETE"])
 @requires_auth("delete:movies")
-def remove_movie(payload,id):
-  movie = Movie.query.filter_by(id=id).one_or_none()
-  if movie is None:
+def delete_movie(payload,movie_id):
+  movie = Movie.query.get(movie_id)
+  if not movie :
     abort(404)
   else:
     try:
@@ -302,10 +275,9 @@ def remove_movie(payload,id):
       return jsonify({
         "success": True,
         "status_code":200,
-        "movie_id": id
+        "movie_id": "{} deleted".format(movie_id)
       }), 200
-    except BaseException:
-      print(sys.exc_info())
+    except Exception:
       abort(500)
 
  #----------------------------------------------------------------------------#
@@ -317,40 +289,40 @@ def remove_movie(payload,id):
 def bad_request(error):
   return jsonify({
       "success": False,
-      "status_code": 400,
-      "message": "request format error"
+      "error": 400,
+      "message": "bad request"
     }), 400
 
 
 @app.errorhandler(500)
-def server_request_processing_error(error):
+def server_error(error):
     return jsonify({
       "success": False,
-      "status_code": 500,
+      "error": 500,
       "message": "Internal server error"
     }), 500
 
 
 @app.errorhandler(404)
-def ressource_not_found(error):
+def not_found(error):
   return jsonify({
     "success": False,
-    "status_code": 404,
-    "error": "Resources_not_found"
+    "error": 404,
+    "error": "Resource not found"
   }), 404
 
 @app.errorhandler(401)
-def unauthorized(error):
+def not_authorized(error):
   return jsonify({
     "success": False,
-    "status_code": 401,
+    "error": 401,
     "message": 'Unathorized'
     }), 401
 
 @app.errorhandler(AuthError)
 def auth_error(error):
   return jsonify({
-    "success": True,
+    "success": False,
     "error":error.status_code,
     "message":error.error['description']
   }), error.status_code

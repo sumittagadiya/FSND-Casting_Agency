@@ -6,10 +6,10 @@
 	},
 	"item": [
 		{
-			"name": "Casting_director",
+			"name": "director",
 			"item": [
 				{
-					"name": "post /Movies",
+					"name": "post movie",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -55,12 +55,12 @@
 								"movies"
 							]
 						},
-						"description": "create movies"
+						"description": "create new movie"
 					},
 					"response": []
 				},
 				{
-					"name": "Post create actor",
+					"name": "post actor",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -89,12 +89,12 @@
 								"actors"
 							]
 						},
-						"description": "create actor record"
+						"description": "create new actor "
 					},
 					"response": []
 				},
 				{
-					"name": "get: Movies",
+					"name": "get movies",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -126,12 +126,12 @@
 								"movies"
 							]
 						},
-						"description": "get all movies"
+						"description": "get all movies "
 					},
 					"response": []
 				},
 				{
-					"name": "GET /movies/id/details",
+					"name": "get movie detail",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -151,12 +151,12 @@
 								"details"
 							]
 						},
-						"description": "details movie"
+						"description": "get movie detail with given id"
 					},
 					"response": []
 				},
 				{
-					"name": "get /actors",
+					"name": "get  actors",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -179,7 +179,7 @@
 					"response": []
 				},
 				{
-					"name": "Patch /Movies/2",
+					"name": "Patch movie",
 					"request": {
 						"method": "PATCH",
 						"header": [
@@ -209,12 +209,12 @@
 								"1"
 							]
 						},
-						"description": "patch edit "
+						"description": "edit movie with given id"
 					},
 					"response": []
 				},
 				{
-					"name": "Patch /actors",
+					"name": "Patch actor",
 					"request": {
 						"method": "PATCH",
 						"header": [
@@ -244,12 +244,12 @@
 								"1"
 							]
 						},
-						"description": "edit actors"
+						"description": "edit actors with given id"
 					},
 					"response": []
 				},
 				{
-					"name": "delete /Movies",
+					"name": "delete  movie",
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -271,12 +271,13 @@
 								"movies",
 								"2"
 							]
-						}
+						},
+						"description": "delete movie with given id"
 					},
 					"response": []
 				},
 				{
-					"name": "Delete /actors",
+					"name": "delete actors",
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -299,7 +300,7 @@
 								"1"
 							]
 						},
-						"description": "remove actor record"
+						"description": "delete actor with given id"
 					},
 					"response": []
 				}
@@ -309,7 +310,7 @@
 				"bearer": [
 					{
 						"key": "token",
-						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkJhU1ZlUFRRaXBFX2hVd2hNRUFqUyJ9.eyJpc3MiOiJodHRwczovL3RhZ2FkaXlhLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw1ZWU3NWQ0ODBmZjUwMjAwMTM3ZjgxNGMiLCJhdWQiOiJjYXN0aW5nIiwiaWF0IjoxNTkyMzIxMzEyLCJleHAiOjE1OTI0MDQxMTIsImF6cCI6IjZzbkNUcXdVZFBKVzJNRExmSlBsOGFtcHAzWWVJUkpjIiwic2NvcGUiOiIiLCJwZXJtaXNzaW9ucyI6WyJkZWxldGU6YWN0b3JzIiwiZ2V0OmFjdG9ycyIsImdldDptb3ZpZXMiLCJwYXRjaDphY3RvcnMiLCJwYXRjaDptb3ZpZXMiLCJwb3N0OmFjdG9ycyJdfQ.dTmmp87sCZmUIUY7MqG8t6qLHveOo7QYoFnmX2m5eUIKKT_iXV-znbS-wFCi8nQPlaevmRRYpNpFTDEWDJSRB-uleK0RP4wnyj8jSQ4jVuoCMLesGi4nCuI8sD3uzTOg1Gf-3K-zNLy_a0iFcufhub9FI5C0bGXtu5pCFG5yw11hwcfxQ5rYF77yryMUvh99ulg8DMXmjcvVKbTRgxA9KjTw0n7yufCD9OoX5yHnyTVri3aZKhyZRfCzeSOWjacOnupf_DrU0xiatDyQFb_yNVsT_IDnRQRfGeYJNtxChjKRoapkGkS1Hf5BCN8ow5LqzZKekLLK2zDjIzgefbBGTA",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkJhU1ZlUFRRaXBFX2hVd2hNRUFqUyJ9.eyJpc3MiOiJodHRwczovL3RhZ2FkaXlhLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw1ZWU3NWQ0ODBmZjUwMjAwMTM3ZjgxNGMiLCJhdWQiOiJjYXN0aW5nIiwiaWF0IjoxNTkyMzg3MzYwLCJleHAiOjE1OTI0NzM3NTksImF6cCI6IjZzbkNUcXdVZFBKVzJNRExmSlBsOGFtcHAzWWVJUkpjIiwic2NvcGUiOiIiLCJwZXJtaXNzaW9ucyI6WyJkZWxldGU6YWN0b3JzIiwiZ2V0OmFjdG9ycyIsImdldDptb3ZpZXMiLCJwYXRjaDphY3RvcnMiLCJwYXRjaDptb3ZpZXMiLCJwb3N0OmFjdG9ycyJdfQ.F_iVCn2zqDW3dB_zzMeZwL0G1oGtuSpDULa3VXONugJPPJqdxzvHgVhykzS8odx9PLe65FKPiWDie93YxwA_NpbnUcYGGTGBnWj7cmTDr0RXeDK2BDi5lkaWmS_p09zrU0NQoNQ7-lVuqS6qOcuYd0Oy4L-iRRQbUKgrmLg9q23HsQ9rnP6eU6gnKUVd3ZeG2Uz8EVCholiG2nq1D5cRcfc6nDHuvTQtSD3kzwVYjE6CXj4q4c0yxskAjXXxQzx2d8Q3aIPS3ou8OQs4InoWj45jxr6re9wZtFhYddQQXPg1CdYPmkcCtxtMVfxEOPTb1KQv4vMeVEkWUq5R2jKI7Q",
 						"type": "string"
 					}
 				]
@@ -342,7 +343,7 @@
 			"name": "Producer",
 			"item": [
 				{
-					"name": "Post / actors",
+					"name": "Post actors",
 					"event": [
 						{
 							"listen": "test",
@@ -386,12 +387,12 @@
 								"actors"
 							]
 						},
-						"description": "create actor record"
+						"description": "create new actor"
 					},
 					"response": []
 				},
 				{
-					"name": "post /Movies",
+					"name": "post movie",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -450,12 +451,12 @@
 								"movies"
 							]
 						},
-						"description": "create movies"
+						"description": "create new movie"
 					},
 					"response": []
 				},
 				{
-					"name": "Patch /actors/2",
+					"name": "Patch actor",
 					"event": [
 						{
 							"listen": "test",
@@ -500,12 +501,12 @@
 								"2"
 							]
 						},
-						"description": "edit actors"
+						"description": "edit actors with given id"
 					},
 					"response": []
 				},
 				{
-					"name": "Patch /Movies/2",
+					"name": "Patch movie",
 					"event": [
 						{
 							"listen": "test",
@@ -550,12 +551,12 @@
 								"2"
 							]
 						},
-						"description": "patch edit "
+						"description": "edit movie with given id"
 					},
 					"response": []
 				},
 				{
-					"name": "get: Movies",
+					"name": "get Movies",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -605,7 +606,7 @@
 					"response": []
 				},
 				{
-					"name": "get /actors",
+					"name": "get actors",
 					"event": [
 						{
 							"listen": "test",
@@ -643,7 +644,7 @@
 					"response": []
 				},
 				{
-					"name": "GET /movies/id/details",
+					"name": "get movie details",
 					"event": [
 						{
 							"listen": "test",
@@ -663,7 +664,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://0.0.0.0:8080/actors/3/details",
+							"raw": "http://0.0.0.0:8080/actors/4/details",
 							"protocol": "http",
 							"host": [
 								"0",
@@ -674,16 +675,16 @@
 							"port": "8080",
 							"path": [
 								"actors",
-								"3",
+								"4",
 								"details"
 							]
 						},
-						"description": "details movie"
+						"description": "get movie detail with given id"
 					},
 					"response": []
 				},
 				{
-					"name": "delete /Movies",
+					"name": "delete Movies",
 					"event": [
 						{
 							"listen": "test",
@@ -720,12 +721,13 @@
 								"movies",
 								"2"
 							]
-						}
+						},
+						"description": "delete movie with given id"
 					},
 					"response": []
 				},
 				{
-					"name": "Delete /actors",
+					"name": "delete actors",
 					"event": [
 						{
 							"listen": "test",
@@ -763,7 +765,7 @@
 								"3"
 							]
 						},
-						"description": "remove actor record"
+						"description": "delete actor with given id"
 					},
 					"response": []
 				}
@@ -773,7 +775,7 @@
 				"bearer": [
 					{
 						"key": "token",
-						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkJhU1ZlUFRRaXBFX2hVd2hNRUFqUyJ9.eyJpc3MiOiJodHRwczovL3RhZ2FkaXlhLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw1ZWU3NWUyOTkyMmQxMzAwMTkxODdmZWMiLCJhdWQiOiJjYXN0aW5nIiwiaWF0IjoxNTkyMzIxMzkyLCJleHAiOjE1OTI0MDQxOTIsImF6cCI6IjZzbkNUcXdVZFBKVzJNRExmSlBsOGFtcHAzWWVJUkpjIiwic2NvcGUiOiIiLCJwZXJtaXNzaW9ucyI6WyJkZWxldGU6YWN0b3JzIiwiZGVsZXRlOm1vdmllcyIsImdldDphY3RvcnMiLCJnZXQ6bW92aWVzIiwicGF0Y2g6YWN0b3JzIiwicGF0Y2g6bW92aWVzIiwicG9zdDphY3RvcnMiLCJwb3N0Om1vdmllcyJdfQ.lePt0azAfv4KAkoMiJ63EXhv6ZwBtHwiLc136kOFP25X1HLFg-c5W-lLkydyQk7uj8kIBtJuhZbD3ZfBCJpup9cJqvs8PBB3bGgg7KZG7NQ9jwxVOD1wWIU3M7f8MIH4_fhSU5sg-HkhjGSKoyLHjtKTiU--eGbNCvG6clXKMNB8tbCtJBcs5Uuo3vz12Z99mVBG4pPH0yGCBJsLdzBAZoy_Nfm4m7icDrz8ZnKD6p65wiP4V1RBI33zdTES7gl-0aFilrYepVqfp2xqKVgthEH20WCEHXzn_Q_hf7Xbf1QEAMvofQ96wiFawO9RVG2RRo90ZgQdQ-vOTqTW69FA6Q",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkJhU1ZlUFRRaXBFX2hVd2hNRUFqUyJ9.eyJpc3MiOiJodHRwczovL3RhZ2FkaXlhLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw1ZWU3NWUyOTkyMmQxMzAwMTkxODdmZWMiLCJhdWQiOiJjYXN0aW5nIiwiaWF0IjoxNTkyMzg3NDM5LCJleHAiOjE1OTI0NzM4MzgsImF6cCI6IjZzbkNUcXdVZFBKVzJNRExmSlBsOGFtcHAzWWVJUkpjIiwic2NvcGUiOiIiLCJwZXJtaXNzaW9ucyI6WyJkZWxldGU6YWN0b3JzIiwiZGVsZXRlOm1vdmllcyIsImdldDphY3RvcnMiLCJnZXQ6bW92aWVzIiwicGF0Y2g6YWN0b3JzIiwicGF0Y2g6bW92aWVzIiwicG9zdDphY3RvcnMiLCJwb3N0Om1vdmllcyJdfQ.YjztTrx8Jx5rqjFMUQdLxRcS_ksEl0X-c2QAJFkWdVDE2CgLTwTqZ8YSwAzwo6rd8WMk4Gqn9Kv1GVq0_4WPOhRqtURDjZoYoQ-2weL-pJilRunIIJV9rFFYmjebzwL7wXlgYeRr1LgkiXAXdzEMGN2oMyFeNVxzpAhqIDClhcYDtX_YBzh6w4fAAd1rstB5bNdEZa42tXJSdRuXOQT61DvPOqJcXhAZDAiPfmJ7kpH10zSpoZIu9rWaftChftkHCVLz27Sd-iiZWBVuaI_5mmw-5ujIOof81CPWO7i-eeTZey9RA1ElKe8-sVhHVkx34HxVycBbChlb7MuplTYKYQ",
 						"type": "string"
 					}
 				]
@@ -803,10 +805,10 @@
 			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "Casting_Assistant",
+			"name": "Assistant",
 			"item": [
 				{
-					"name": "Post create actor",
+					"name": "post actor",
 					"event": [
 						{
 							"listen": "test",
@@ -850,12 +852,12 @@
 								"actors"
 							]
 						},
-						"description": "create actor record"
+						"description": "create new actor"
 					},
 					"response": []
 				},
 				{
-					"name": "post /Movies",
+					"name": "post movie",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -914,12 +916,12 @@
 								"movies"
 							]
 						},
-						"description": "create movies"
+						"description": "create new movie"
 					},
 					"response": []
 				},
 				{
-					"name": "get /actors",
+					"name": "get  actors",
 					"event": [
 						{
 							"listen": "test",
@@ -952,12 +954,12 @@
 								"actors"
 							]
 						},
-						"description": "get all actors"
+						"description": "get all actors "
 					},
 					"response": []
 				},
 				{
-					"name": "get: Movies",
+					"name": "get Movies",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -1007,7 +1009,7 @@
 					"response": []
 				},
 				{
-					"name": "GET /movies/id/details",
+					"name": "get movie detail",
 					"event": [
 						{
 							"listen": "test",
@@ -1042,12 +1044,37 @@
 								"details"
 							]
 						},
-						"description": "details movie"
+						"description": "get movie detail with given id"
 					},
 					"response": []
 				},
 				{
-					"name": "Patch /Movies/2",
+					"name": "get actor detail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://0.0.0.0:8080/actors/2/details",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8080",
+							"path": [
+								"actors",
+								"2",
+								"details"
+							]
+						},
+						"description": "get actor detail with given id"
+					},
+					"response": []
+				},
+				{
+					"name": "Patch movie",
 					"event": [
 						{
 							"listen": "test",
@@ -1092,12 +1119,12 @@
 								"2"
 							]
 						},
-						"description": "patch edit "
+						"description": "edit movie with given id"
 					},
 					"response": []
 				},
 				{
-					"name": "Patch /actors",
+					"name": "Patch actors",
 					"event": [
 						{
 							"listen": "test",
@@ -1142,12 +1169,12 @@
 								"1"
 							]
 						},
-						"description": "edit actors"
+						"description": "edit actors with given id"
 					},
 					"response": []
 				},
 				{
-					"name": "Delete /actors",
+					"name": "Delete actors",
 					"event": [
 						{
 							"listen": "test",
@@ -1185,12 +1212,12 @@
 								"1"
 							]
 						},
-						"description": "remove actor record"
+						"description": "delete actors with given id"
 					},
 					"response": []
 				},
 				{
-					"name": "Delete /Movies",
+					"name": "Delete movies",
 					"event": [
 						{
 							"listen": "test",
@@ -1227,7 +1254,8 @@
 								"movies",
 								"1"
 							]
-						}
+						},
+						"description": "delete movie with given id"
 					},
 					"response": []
 				}
@@ -1237,7 +1265,7 @@
 				"bearer": [
 					{
 						"key": "token",
-						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkJhU1ZlUFRRaXBFX2hVd2hNRUFqUyJ9.eyJpc3MiOiJodHRwczovL3RhZ2FkaXlhLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw1ZWU3NWM3MTBmZjUwMjAwMTM3ZjgwMzIiLCJhdWQiOiJjYXN0aW5nIiwiaWF0IjoxNTkyMzIxMTgwLCJleHAiOjE1OTI0MDM5ODAsImF6cCI6IjZzbkNUcXdVZFBKVzJNRExmSlBsOGFtcHAzWWVJUkpjIiwic2NvcGUiOiIiLCJwZXJtaXNzaW9ucyI6WyJnZXQ6YWN0b3JzIiwiZ2V0Om1vdmllcyJdfQ.uxSsvOiVKD4bctkH2u7NUim9ofXRPc3CVvhy-WzWd_R2iqpbnBFuLvhzanZbREiuebrUtbVe2HRXbJvSUhsLHG95CDKuOBXVWChB2spdvCi-ORXuZkS1unfpwZB9wHy9vuz_m9GDnvD03YIReOggrnCtmVaks84V-WGQrXVoVyzGTeNZTJho-BvMwxMg0dkldhy8LoIPbWQTsmIpXQucSLaJuACcWJ7wNUwt-p0m-R8UMi2mDFELjt5IQw8eZRAnOqxxIyxm1OtJngrX3Hxp9x0gRsCzvGzOmn4U6L5SQEE3HXi4s8B6egX3UGHOT_ZJ2OQiXW5BIa06mner-sjBrA",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkJhU1ZlUFRRaXBFX2hVd2hNRUFqUyJ9.eyJpc3MiOiJodHRwczovL3RhZ2FkaXlhLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw1ZWU3NWM3MTBmZjUwMjAwMTM3ZjgwMzIiLCJhdWQiOiJjYXN0aW5nIiwiaWF0IjoxNTkyMzg3MTkzLCJleHAiOjE1OTI0NzM1OTIsImF6cCI6IjZzbkNUcXdVZFBKVzJNRExmSlBsOGFtcHAzWWVJUkpjIiwic2NvcGUiOiIiLCJwZXJtaXNzaW9ucyI6WyJnZXQ6YWN0b3JzIiwiZ2V0Om1vdmllcyJdfQ.UGN5AXZe4SQ9o2fZ6SK1vfuxzf2rAkuSbccujz64nO3Irj6BQuZtrsTEkIeAXq5PNEYrHC-QTX4I-rWh7KRNBLZuhJ5bolz6vtL-b5cDzQJoZCpoMJLQtNVMPTgwkXggn0lRsahi_ICULx9HuMki7YuKOtfRzYSzxHZWGobb04fyvFCWR-UHmhSj-xay4B_hnFqqA9rjAgkqZXqdQyOvjVouCya382YJJRpHtbavJ5yfzDqk_i_hv07sYLZXTh4FzjpzZIeTFrm3axPCyLc09B7-J_uhpCPqxY280otKMN3mEQeAgwXpfgv9A8l_h0kF8oVTaEACueWdJaiKzuHM8g",
 						"type": "string"
 					}
 				]

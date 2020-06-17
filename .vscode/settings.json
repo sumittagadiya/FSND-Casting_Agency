@@ -1,3 +1,5 @@
 {
-    "python.pythonPath": "/home/sumit/anaconda3/envs/capstone/bin/python"
+    "python.pythonPath": "/home/sumit/anaconda3/envs/capstone/bin/python",
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true
 }
