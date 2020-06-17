@@ -1,6 +1,8 @@
 # FSND-Casting_Agency
-Udacity Full Stack Developer Nanodegree Project Capstone Projects
+Casting Agency models a company that is responsible for creating movies and managing and assigning actors to those movies.
+Hosted on heroku [Link](https://casting-agency-fsnd-capstone.herokuapp.com)
 
+Hosted on heroku.
 ## Motivation
 This is the last project of the Udacity-Full-Stack-Nanodegree Course. It covers following technical topics in a single app:
 
