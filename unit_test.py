@@ -6,13 +6,12 @@ import json
 import os
 import unittest
 from app import app, create_app
-from models import Movie,Actor,test_db_drop_create_all
-
+from models import Movie,Actor,db_drop_create_all
 from datetime import date
 import os
 
 database_path = os.environ['TEST_DATABASE_URL']
-#database_path='postgres://postgres:1234@localhost:5432/test_casting'  (incase of locally run)
+#database_path='postgres://postgres:1234@localhost:5432/casting_test_fsnd'  (incase of locally run)
 assistant = os.environ['assistant']
 director = os.environ['director']
 producer = os.environ['producer']
@@ -24,7 +23,7 @@ class Casting_Agency_TestCase(unittest.TestCase):
         app.config['DEBUG'] = False
         app.config['SQLALCHEMY_DATABASE_URI'] = database_path
         self.app = app.test_client()
-        test_db_drop_create_all()
+        db_drop_create_all()
 
         
     def tearDown(self):
