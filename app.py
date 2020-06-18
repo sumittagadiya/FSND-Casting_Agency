@@ -3,6 +3,7 @@ import sys
 from flask import Flask, jsonify, request, abort
 from flask_cors import CORS
 from auth.auth import AuthError, requires_auth
+import json
 from models import setup_db,Movie, Actor, db_drop_create_all
 
 
@@ -15,12 +16,12 @@ def create_app(test_config=None):
 app = create_app()
 #db_drop_create_all() # uncomment this if you want to start a new database on app refresh
 
-RECORD_PER_PAGE = 10
-def paginated_records(request,records,RECORD_PER_PAGE):
+DATA_PER_PAGE = 10
+def paginated_records(request,records,DATA_PER_PAGE):
   page=request.args.get('page',1,type=int)
-  start=(page - 1)*RECORD_PER_PAGE
-  end=start+RECORD_PER_PAGE
-  records = [record.short() for record in records]
+  start=(page - 1)*DATA_PER_PAGE
+  end=start+DATA_PER_PAGE
+  records = [record.attributes() for record in records]
   current_records = records[start:end]
   return current_records
 
@@ -46,7 +47,7 @@ def get_movies_list(payload):
   total_movies = len(movies)
   print("movies ====> ", movies)
   # Get paginated movies
-  current_movies =  paginated_records(request, movies, RECORD_PER_PAGE)
+  current_movies =  paginated_records(request, movies, DATA_PER_PAGE)
   if (len(current_movies) == 0):
     abort(404)
   else:
@@ -70,7 +71,7 @@ def get_movie_details_given_id(payload,movie_id):
       return jsonify({
         "status_code": 200,
         "success": True,
-        "movie": movie.format()
+        "movie": movie.attributes()
       }), 200
     except Exception:
       abort(500)
@@ -91,7 +92,7 @@ def get_particular_actor(payload,actor_id):
       return jsonify({
         "status_code": 200,
         "success": True,
-        'actor': actor.format()
+        'actor': actor.attributes()
       }), 200
 
     except Exception:
@@ -108,7 +109,7 @@ def get_actors_list(payload):
   total_actors = len(actors)
   print("Actors =========>",actors)
   # get paginated actors
-  current_actors =  paginated_records(request, actors, RECORD_PER_PAGE)
+  current_actors =  paginated_records(request, actors, DATA_PER_PAGE)
   if (len(current_actors) == 0):
     abort(404)
   else:
@@ -137,8 +138,7 @@ def add_new_actor(payload):
     return jsonify({
       "success": True,
       "status_code": 200,
-      "message": "{} added".format(actor.name),
-      "Added actor":actor.short()
+      "Added actor":actor.attributes()
     }), 200
   except Exception:
     abort(400)
@@ -153,16 +153,14 @@ def add_new_movie(payload):
   body = request.get_json()
   new_title = body.get("title")
   new_release_date = body.get("release_date")
-  new_actor_id = body.get("actor_id")
+  movie = Movie(title=new_title,release_date=new_release_date)
 
-  movie = Movie(title=new_title,release_date=new_release_date,actor_id=new_actor_id)
   try:
     movie.insert()
     return jsonify({
       "success": True,
       "status_code": 200,
-      "message": "{} added".format(movie.title),
-      "Added Movie": movie.short()
+      "Added Movie": movie.attributes()
     }), 200
   except Exception:
     abort(400)
@@ -183,19 +181,17 @@ def update_movie(payload,movie_id):
       body = request.get_json()
       title = body.get("title")
       release_date = body.get("release_date")
-      actor_id = body.get("actor_id")
-
+      
       if title:
         movie.title = title
       if release_date:
         movie.release_date = release_date
-      if actor_id:
-        movie.actor_id = actor_id
+
       movie.update()
       return jsonify({
         "success": True,
         "status_code":200,
-        'movie':movie.short()
+        'movie':movie.attributes()
       }), 200
 
     except Exception:
@@ -210,7 +206,7 @@ PATCH : update particular actor details
 @app.route("/actors/<int:actor_id>", methods=["PATCH"])
 @requires_auth("patch:actors")
 def edit_actor(payload, actor_id):
-  print("patch actor id",id)
+  print("patch actor id",actor_id)
   actor = Actor.query.get(actor_id)
   if not actor :
     abort(404)
@@ -230,7 +226,7 @@ def edit_actor(payload, actor_id):
       return jsonify({
         'status_code': 200,
         'success':  True,
-        'actor': actor.short()
+        'actor': actor.attributes()
       }), 200
     except Exception:
       abort(500)
