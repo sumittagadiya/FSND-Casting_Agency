@@ -7,6 +7,11 @@ Here is hosted heroku [Link](https://casting-agency-fsnd-capstone.herokuapp.com)
 
 This is my Last project of Full stack nano degree program by Udacity
 
+#### Reference :
+```
+https://github.com/udacity/FSND/blob/master/BasicFlaskAuth/app.py
+https://github.com/cr21/cr-casting-agency
+```
 
 ## Project Dependencies
 
